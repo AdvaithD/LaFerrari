@@ -7,11 +7,21 @@
     "react-dom": "^16.6.0",
     "react-scripts": "2.1.1"
   },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "nodemon": "^1.18.4"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "nodemon --exec babel-node src/index.js",
+    "buidl": "babel src --out-dir dist",
+    "stert": "node dist/index.js"
   },
   "eslintConfig": {
     "extends": "react-app"
