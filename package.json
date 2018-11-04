@@ -44,7 +44,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "nodemon --exec babel-node src/index.js",
+    "dev": "nodemon --exec babel-node src/index.js --watch ./src/index.js",
     "buidl": "babel src --out-dir dist",
     "stert": "node dist/index.js"
   },

@@ -4,6 +4,7 @@ import distribute from './modules/distribute'
 import createContract from './modules/createContract'
 import pubs from './util/pubs'
 // import toQR from './modules/toQR'
+import EventEmitter from 'events'
 import express from 'express'
 import io from 'socket.io-client'
 import http from 'http'
@@ -21,7 +22,8 @@ const port = 5000
 const app = express()
 let server = http.createServer(app)
 const ioServer = require('socket.io')(server)
-
+class Emitter extends EventEmitter {}
+const listener = new Emitter()
 // const web3 = new Web3('https://ropsten.infura.io/v3/e6780ebea2fe4b1b8dde4c72fa0c78a8')
 // const web3 = new Web3('https://ropsten.infura.io/v3/6395e443a0a9487b8f345b7aa684011d')
 // Manufacturers address(generate from web3)
@@ -47,7 +49,10 @@ ioServer.on('connection', socket => {
         `Form submitted
        ${company} - ${productName} - ${expiryDate} - ${quantity} - ${privKey} - ${rebateVal}`))
 
-      await distribute(quantity, rebateVal, web3)
+      await distribute(quantity, rebateVal, web3, listener)
+      listener.on('txHash', txHash => {
+        socket.emit('txHash', txHash)
+      })
     } catch (error) {
       console.log(error)
     }

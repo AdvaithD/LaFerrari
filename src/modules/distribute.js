@@ -33,7 +33,7 @@ const toQR = async (x) => {
   })
 }
 // company, productName, expiryDate, quantity, privKey, rebateVal
-export default async function (n, val, web3) {
+export default async function (n, val, web3, listener) {
   var accounts = {}
   for (i = 0; i < n; i++) {
     var account = await web3.eth.accounts.create()
@@ -89,6 +89,8 @@ export default async function (n, val, web3) {
       web3.eth.sendSignedTransaction(raw, (err, txHash) => {
         if (err) {
           console.log(err)
+        } else {
+          listener.emit('txHash', txHash)
         }
         console.log('txHash:', txHash)
       })
