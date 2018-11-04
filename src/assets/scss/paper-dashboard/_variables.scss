@@ -357,8 +357,8 @@ $social-linkedin: 			         #0077B5 !default;
 $social-linkedin-state-color:        darken(#0077B5, 5%) !default;
 
 // Sidebar variables
-$sidebar-width:              calc(100% - 100%) !default;
-$sidebar-mini-width:         calc(100% - 80px) !default;
+$sidebar-width:              calc(0px) !default;
+$sidebar-mini-width:         calc(0px) !default;
 
 
 // Social icons color
