@@ -42,7 +42,7 @@ ioServer.on('connection', socket => {
   socket.on('submit', async data => {
     try {
       let { company, productName, expiryDate, quantity, privKey, rebateVal } = data
-      createContract(productName, 'Rebate smart contract test', expiryDate, company, quantity, pubs, web3)
+      // createContract(productName, 'Rebate smart contract test', expiryDate, company, quantity, pubs)
       console.log(chalk.cyan.bold(
         `Form submitted
        ${company} - ${productName} - ${expiryDate} - ${quantity} - ${privKey} - ${rebateVal}`))
