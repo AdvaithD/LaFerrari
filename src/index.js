@@ -10,35 +10,45 @@ import io from 'socket.io-client'
 import http from 'http'
 const Web3 = require('web3')
 const web3 = new Web3('https://ropsten.infura.io/v3/e6780ebea2fe4b1b8dde4c72fa0c78a8')
-// var Tx = require('ethereumjs-tx')
-// const Web3 = require('web3')
-// var QRCode = require('qrcode')
-// const low = require('lowdb')
-// const FileSync = require('lowdb/adapters/FileSync')
-// const adapter = new FileSync('db.json')
-// const db = low(adapter)
-// import distribute from './modules/distribute'
+const FileAsync = require('lowdb/adapters/FileAsync')
+const low = require('lowdb')
+
 const port = 5000
 const app = express()
 let server = http.createServer(app)
 const ioServer = require('socket.io')(server)
 class Emitter extends EventEmitter {}
 const listener = new Emitter()
-// const web3 = new Web3('https://ropsten.infura.io/v3/e6780ebea2fe4b1b8dde4c72fa0c78a8')
-// const web3 = new Web3('https://ropsten.infura.io/v3/6395e443a0a9487b8f345b7aa684011d')
-// Manufacturers address(generate from web3)
-// const accountFrom = '0xaa2188f9dd12d91adab2045c42dfc76e2ace86c5'
-// private key
-// const pKey = '3f530f071eb45d61cd9be599a570d47d7e580999cfe525f9a7c0de1549513af0'
-// private key parsed from buffer to hex
-// const privateKeyFrom = Buffer.from(pKey, 'hex')
-// const man_account = web3.eth.accounts.privateKeyToAccount(pKey)
-// global variables
-// var i, a, pub_keys, private_keys
 
-// prototype DB defaults
-// db.defaults({ qr: [] })
-// .write()
+const adapter = new FileAsync('db.json')
+low(adapter)
+  .then(db => {
+    // Routes
+    // GET /posts/:id
+    app.get('/posts/:id', (req, res) => {
+      const post = db.get('posts')
+        .find({ id: req.params.id })
+        .value()
+
+      res.send(post)
+    })
+
+    // POST /posts
+    app.post('/posts', (req, res) => {
+      db.get('posts')
+        .push(req.body)
+        .last()
+        .assign({ id: Date.now().toString() })
+        .write()
+        .then(post => res.send(post))
+    })
+
+    // Set db default values
+    return db.defaults({ posts: [] }).write()
+  })
+  .then(() => {
+    app.listen(3000, () => console.log('listening on port 3000'))
+  })
 
 ioServer.on('connection', socket => {
   socket.on('submit', async data => {

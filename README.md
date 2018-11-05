@@ -1,4 +1,4 @@
-# Calhacks 5 submission
+**# Calhacks 5 submission
 
 ## Rebate Protocol - Frontend
 
